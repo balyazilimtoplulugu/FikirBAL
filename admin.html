@@ -1,32 +1,41 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FikirBAL - Admin Panel</title>
+  <title>FikirBAL - Yönetim Paneli</title>
   <link rel="stylesheet" href="styles.css">
+  <link rel="shortcut icon" href="favicon.ico">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
   <div class="container">
     <header>
-      <h1>FikirBAL Admin</h1>
+      <div class="logo">
+        <i class="fas fa-lightbulb"></i>
+        <h1>FikirBAL Yönetim</h1>
+      </div>
       <nav>
-        <a href="index.html">Home</a>
-        <a href="admin.html" class="active">Admin Panel</a>
-        <button id="logoutBtn" class="btn-secondary">Logout</button>
+        <a href="index.html"><i class="fas fa-home"></i> Ana Sayfa</a>
+        <a href="admin.html" class="active"><i class="fas fa-cog"></i> Yönetim Paneli</a>
+        <button id="logoutBtn" class="btn-secondary"><i class="fas fa-sign-out-alt"></i> Çıkış</button>
       </nav>
     </header>
 
     <main>
       <div class="admin-header">
-        <h2>Pending Ideas</h2>
-        <p class="subtitle">Review and approve student submissions</p>
+        <h2><i class="fas fa-clock"></i> Bekleyen Fikirler</h2>
+        <p class="subtitle">Öğrenci gönderilerini incele ve onayla</p>
       </div>
 
-      <div id="loading" class="loading">Loading pending ideas...</div>
+      <div id="loading" class="loading">
+        <i class="fas fa-spinner fa-spin"></i> Bekleyen fikirler yükleniyor...
+      </div>
       <div id="ideas-container" class="admin-ideas"></div>
       <div id="no-ideas" class="no-ideas" style="display: none;">
-        No pending ideas to review! 🎉
+        <i class="fas fa-check-circle"></i>
+        <p>İncelenecek bekleyen fikir yok! 🎉</p>
       </div>
     </main>
   </div>

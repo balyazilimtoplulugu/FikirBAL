@@ -1,25 +1,52 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FikirBAL - Student Project Ideas</title>
+  <title>FikirBAL - Bornova Anadolu Lisesi Proje Fikirleri</title>
+  <meta name="description" content="Bornova Anadolu Lisesi öğrencilerinin proje fikirlerini paylaştığı ve oy kullandığı platform.">
+  <meta name="keywords" content="Bornova Anadolu Lisesi, BAL, proje fikirleri, öğrenci projeleri, eğitim, İzmir, Bornova">
+  <meta name="author" content="Bornova Anadolu Lisesi">
+  <meta property="og:title" content="FikirBAL - Bornova Anadolu Lisesi Proje Fikirleri">
+  <meta property="og:description" content="Bornova Anadolu Lisesi öğrencilerinin proje fikirlerini paylaştığı ve oy kullandığı platform.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://fikirbal.bal.k12.tr">
+  <meta property="og:image" content="/og-image.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="FikirBAL - Bornova Anadolu Lisesi Proje Fikirleri">
+  <meta name="twitter:description" content="Bornova Anadolu Lisesi öğrencilerinin proje fikirlerini paylaştığı ve oy kullandığı platform.">
+  <meta name="twitter:image" content="/twitter-image.jpg">
+  
+  <link rel="shortcut icon" href="favicon.ico">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
   <div class="container">
-    <!-- Header with submit button -->
-    <header>
-      <div class="header-content">
-        <div>
-          <h1>FikirBAL</h1>
-          <p>Share and vote for the best project ideas</p>
+    <!-- Hero Section with Logos and Centered Button -->
+    <header class="hero">
+      <div class="hero-content">
+        <div class="logos-section">
+          <img src="logo.png" alt="Bornova Anadolu Lisesi" class="school-logo">
+          <img src="club.png" alt="Yazılım Topluluğu" class="club-logo">
         </div>
-        <div class="header-actions">
-          <button id="openModalBtn" class="btn-primary">
-            💡 Got a project idea?
+        
+        <div class="logo-section">
+          <div class="logo">
+            <i class="fas fa-lightbulb"></i>
+            <h1>FikirBAL</h1>
+          </div>
+          <p class="tagline">Bornova Anadolu Lisesi Yazılım Topluluğu Proje Fikirleri</p>
+        </div>
+        
+        <div class="cta-section">
+          <button id="openModalBtn" class="btn-hero">
+            <i class="fas fa-plus-circle"></i>
+            Proje Fikrin Mi Var?
           </button>
-          <a href="login.html" class="admin-link">Admin</a>
+          <p class="cta-description">Yaratıcı fikirlerini paylaş, <span style="font-weight: bolder;">BAL Yazılım Topluluğu</span> yapsın!</p>
         </div>
       </div>
     </header>
@@ -27,60 +54,68 @@
     <!-- Ideas Feed -->
     <main>
       <div class="feed-header">
-        <h2>Top Project Ideas</h2>
-        <p class="subtitle">Vote for the ideas you'd like to see happen!</p>
+        <h2><i class="fas fa-fire"></i> En Popüler Proje Fikirleri</h2>
+        <p class="subtitle">Gerçekleşmesini istediğin fikirler için oy kullan!</p>
       </div>
 
-      <div id="loading" class="loading">Loading ideas...</div>
+      <div id="loading" class="loading">
+        <i class="fas fa-spinner fa-spin"></i> Yükleniyor...
+      </div>
       <div id="ideas-container" class="ideas-grid"></div>
       <div id="no-ideas" class="no-ideas" style="display: none;">
-        No ideas yet. Be the first to submit one! 🚀
+        <i class="fas fa-inbox"></i>
+        <p>Henüz fikir yok! İlk sen paylaş 🚀</p>
       </div>
     </main>
+    
+    <!-- Footer -->
+    <footer>
+      <p>&copy; 2025 Bornova Anadolu Lisesi Yazılım Topluluğu - Tüm hakları saklıdır</p>
+    </footer>
   </div>
 
   <!-- Submission Modal -->
   <div id="submitModal" class="modal">
     <div class="modal-content">
       <div class="modal-header">
-        <h2>Submit Your Project Idea</h2>
+        <h2><i class="fas fa-lightbulb"></i> Proje Fikrini Paylaş</h2>
         <button class="close-btn" id="closeModalBtn">&times;</button>
       </div>
 
       <form id="ideaForm">
         <div class="form-group">
-          <label for="title">Project Title *</label>
+          <label for="title"><i class="fas fa-heading"></i> Proje Başlığı *</label>
           <input 
             type="text" 
             id="title" 
             name="title" 
             required 
-            placeholder="E.g., School Event Management System"
+            placeholder="Örn: Okul Etkinlik Yönetim Sistemi"
             maxlength="100"
           >
         </div>
 
         <div class="form-group">
-          <label for="description">Description *</label>
+          <label for="description"><i class="fas fa-align-left"></i> Açıklama *</label>
           <textarea 
             id="description" 
             name="description" 
             rows="5" 
             required
-            placeholder="Describe your idea in detail..."
+            placeholder="Fikrini detaylı bir şekilde anlat..."
             maxlength="500"
           ></textarea>
-          <small class="char-count">0/500 characters</small>
+          <small class="char-count">0/500 karakter</small>
         </div>
 
         <div class="form-group">
-          <label for="name">Your Name *</label>
+          <label for="name"><i class="fas fa-user"></i> Adın Soyadın *</label>
           <input 
             type="text" 
             id="name" 
             name="name" 
             required 
-            placeholder="John Doe"
+            placeholder="Emre Bozkurt"
             maxlength="50"
           >
         </div>
@@ -89,10 +124,10 @@
 
         <div class="modal-actions">
           <button type="button" class="btn-secondary" id="cancelBtn">
-            Cancel
+            <i class="fas fa-times"></i> İptal
           </button>
           <button type="submit" class="btn-primary">
-            Submit Idea
+            <i class="fas fa-paper-plane"></i> Fikrini Gönder
           </button>
         </div>
       </form>
