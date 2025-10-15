@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FikirBAL - Admin Panel</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>FikirBAL Admin</h1>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="admin.html" class="active">Admin Panel</a>
+        <button id="logoutBtn" class="btn-secondary">Logout</button>
+      </nav>
+    </header>
+
+    <main>
+      <div class="admin-header">
+        <h2>Pending Ideas</h2>
+        <p class="subtitle">Review and approve student submissions</p>
+      </div>
+
+      <div id="loading" class="loading">Loading pending ideas...</div>
+      <div id="ideas-container" class="admin-ideas"></div>
+      <div id="no-ideas" class="no-ideas" style="display: none;">
+        No pending ideas to review! 🎉
+      </div>
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/config.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>

@@ -18,6 +18,7 @@ function closeModal() {
   document.getElementById('ideaForm').reset();
   document.getElementById('message').textContent = '';
   document.getElementById('message').className = 'message';
+  document.querySelector('.char-count').textContent = '0/500 characters';
 }
 
 closeBtn.addEventListener('click', closeModal);
@@ -53,7 +54,7 @@ descriptionField.addEventListener('input', () => {
   }
 });
 
-// ==================== FORM SUBMISSION ====================
+// ==================== FORM SUBMISSION (FIXED VERSION) ====================
 
 document.getElementById('ideaForm').addEventListener('submit', async (e) => {
   e.preventDefault();
@@ -61,12 +62,13 @@ document.getElementById('ideaForm').addEventListener('submit', async (e) => {
   const messageDiv = document.getElementById('message');
   const submitBtn = e.target.querySelector('button[type="submit"]');
 
-  // Get form data
+  // Get form data with user identifier
   const formData = {
     title: document.getElementById('title').value.trim(),
     description: document.getElementById('description').value.trim(),
     submitted_by: document.getElementById('name').value.trim(),
-    status: 'pending'
+    status: 'pending',
+    user_identifier: getUserIdentifier() // Track who submitted this
   };
 
   // Validate
@@ -80,13 +82,30 @@ document.getElementById('ideaForm').addEventListener('submit', async (e) => {
   submitBtn.textContent = 'Submitting...';
 
   try {
-    const { data, error } = await supabase
+    // Check submission limit first
+    const { data: userIdeas, error: countError } = await supabase
       .from('ideas')
-      .insert([formData])
-      .select();
+      .select('id')
+      .eq('user_identifier', formData.user_identifier);
+
+    if (countError) throw countError;
+
+    if (userIdeas && userIdeas.length >= 5) {
+      messageDiv.className = 'message error';
+      messageDiv.textContent = '✗ You have reached the maximum of 5 idea submissions.';
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Submit Idea';
+      return;
+    }
+
+    // Submit the idea (FIXED - don't expect data back)
+    const { error } = await supabase
+      .from('ideas')
+      .insert([formData]);
 
     if (error) throw error;
 
+    // Success!
     messageDiv.className = 'message success';
     messageDiv.textContent = 
       '✓ Success! Your idea will appear after admin approval.';
@@ -205,6 +224,10 @@ async function handleUpvote(e) {
     if (upvoteError) {
       if (upvoteError.code === '23505') {
         showToast('You already upvoted this idea!', 'error');
+        userUpvotes.push(ideaId);
+        localStorage.setItem('upvoted_ideas', JSON.stringify(userUpvotes));
+        btn.textContent = '✓';
+        btn.classList.add('upvoted');
         return;
       }
       throw upvoteError;
