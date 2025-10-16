@@ -206,6 +206,7 @@ async function handleUpvote(e) {
   const ideaId = btn.dataset.ideaId;
   const userIdentifier = getUserIdentifier();
   const isCurrentlyUpvoted = userUpvotes.includes(ideaId);
+  const countSpan = btn.nextElementSibling;
   
   const originalText = btn.textContent;
   btn.disabled = true;
@@ -225,22 +226,12 @@ async function handleUpvote(e) {
         throw deleteError;
       }
 
-      // Get current count
-      const { data: idea, error: fetchError } = await supabase
-        .from('ideas')
-        .select('upvote_count')
-        .eq('id', ideaId)
-        .single();
+      // Use RPC to decrement count atomically
+      const { error: decrementError } = await supabase.rpc('decrement_upvote', {
+        idea_id: ideaId
+      });
 
-      if (fetchError) throw fetchError;
-
-      // Decrement count
-      const { error: updateError } = await supabase
-        .from('ideas')
-        .update({ upvote_count: Math.max(0, idea.upvote_count - 1) })
-        .eq('id', ideaId);
-
-      if (updateError) throw updateError;
+      if (decrementError) throw decrementError;
 
       // Update UI
       userUpvotes = userUpvotes.filter(id => id !== ideaId);
@@ -250,8 +241,9 @@ async function handleUpvote(e) {
       btn.classList.remove('voted');
       btn.classList.add('unvoted');
       
-      const countSpan = btn.nextElementSibling;
-      countSpan.textContent = Math.max(0, idea.upvote_count - 1);
+      // Update count in UI
+      const currentCount = parseInt(countSpan.textContent);
+      countSpan.textContent = Math.max(0, currentCount - 1);
 
       showToast("Oyunuz geri alındı!", 'info');
 
@@ -273,22 +265,12 @@ async function handleUpvote(e) {
         throw upvoteError;
       }
 
-      // Get current count
-      const { data: idea, error: fetchError } = await supabase
-        .from('ideas')
-        .select('upvote_count')
-        .eq('id', ideaId)
-        .single();
+      // Use RPC to increment count atomically
+      const { error: incrementError } = await supabase.rpc('increment_upvote', {
+        idea_id: ideaId
+      });
 
-      if (fetchError) throw fetchError;
-
-      // Increment count
-      const { error: updateError } = await supabase
-        .from('ideas')
-        .update({ upvote_count: idea.upvote_count + 1 })
-        .eq('id', ideaId);
-
-      if (updateError) throw updateError;
+      if (incrementError) throw incrementError;
 
       // Update UI
       userUpvotes.push(ideaId);
@@ -298,8 +280,9 @@ async function handleUpvote(e) {
       btn.classList.remove('unvoted');
       btn.classList.add('voted');
       
-      const countSpan = btn.nextElementSibling;
-      countSpan.textContent = idea.upvote_count + 1;
+      // Update count in UI
+      const currentCount = parseInt(countSpan.textContent);
+      countSpan.textContent = currentCount + 1;
 
       showToast('Oyladınız! 🎉', 'success');
     }
